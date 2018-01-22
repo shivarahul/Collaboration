@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta charset="ISO-8859-1">
+<title>Angular Session for routing Day -4</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-cookies.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.3/lodash.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.1/sockjs.min.js"></script>
+	
+<script src="RouteConfig.js"></script>
+
+<script src="user/userController.js"></script>
+<script src="Blog/BlogController.js"></script>
+<script src="forum/forumController.js"></script>
+<script src="jobs/jobsController.js"></script>
+<script src="Blog/adminBlogController.js"></script>
+<script src="forum/adminForumController.js"></script>
+ <script src="Friend/FriendController.js"></script>
+<script src="Chat/ChatController.js"></script>
+<script src="Chat/chatService.js"></script>
+<!-- <script src="pages/mainController.js"></script> -->
+
+
+
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">   
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
+<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+</head>
+<body data-ng-app="myApp">
+	Role:{{currentUser.role}}
+	<nav class="navbar navbar-inverse">
+	<div class="container">
+	<div class="navbar-header">
+	<a class="navbar-brand" href="/">Social Web</a>
+	</div>
+
+	<ul class="nav navbar-nav ">
+	
+	 <li><a href="#/">Home</a></li>
+
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Blog<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#/postblog" data-ng-show="currentUser.role=='user'">Create Blog</a></li>
+               <li><a href="#/viewblog">Show Blog</a></li>
+      
+        <li><a href="#/adminBlog" data-ng-show="currentUser.role=='admin'"> Blog</a></li>
+        </ul>
+      </li>
+      
+      
+      
+       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Forum<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+         <li><a href="#/postforum" data-ng-show="currentUser.role=='user'">Create Forum</a></li>
+          <li><a href="#/viewforum">Show Forum</a></li>
+          
+            <li><a href="#/adminForum" data-ng-show="currentUser.role=='admin'">Forum</a></li>
+        </ul>
+      </li>
+      
+      <li><a href="#/registration" data-ng-hide="currentUser.firstName">Register</a></li>
+      
+ 		<li><a href="#/login" data-ng-hide="currentUser.firstName">login</a></li>
+        <li><a href="" data-ng-click="logout()" data-ng-show="currentUser.firstName">logout</a></li>
+        
+      <li><a href="#/Chat">Chat</a></li>
+      
+      <li><a href="#/jobs" ng-show="currentUser.role=='admin'">Add Jobs</a></li>
+      <li ><a href="#/showjobs"  ng-show="currentUser.role=='user'">Show Job</a></li>
+      
+      <li ><a href="#/Friend"  ng-show="currentUser.role=='user'">Friends</a></li>
+      
+      	<li ><a href="#/ShowFriendRequest" ng-show="currentUser.role=='user'"> Friend Request</a></li>
+      
+    </ul>
+    
+      <div class="nav navbar-nav navbar-right" ng-hide="currentUser==undefined">
+         <font color='white' face='calibri' size='4'>Welcome :{{currentUser.username}} &nbsp;&nbsp;&nbsp;
+         <img src="http://localhost:8181/Collabaration/getimage/{{currentUser.username}}" width="20" height=20"/>
+      
+     
+         <a href="#/ProfilePic">Profile Picture</a>
+         
+           <!-- <a href="#" data-ng-click='logout()' data-ng-controller='UserController'>Profile Picture</a> -->
+       
+         </font>
+  	  </div>
+    
+  </div>
+</nav>
+ <div class="container-fluid">
+ 
+		<div><ng-view></ng-view></div>
+ </div>
+	
+</body>
+</html>
