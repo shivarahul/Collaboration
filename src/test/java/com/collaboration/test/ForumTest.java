@@ -1,4 +1,4 @@
-package com.collaboration.test;
+/*package com.collaboration.test;
 
 import static org.junit.Assert.*;
 
@@ -13,6 +13,7 @@ import com.collaboration.DAO.ForumDAO;
 import com.collaboration.DbConfig.DbConfig;
 import com.collaboration.model.Forum;
 
+@Ignore
 public class ForumTest {
 	
 static ForumDAO  forumDAO;
@@ -97,3 +98,4 @@ static ForumDAO  forumDAO;
 	
 	
 
+*/

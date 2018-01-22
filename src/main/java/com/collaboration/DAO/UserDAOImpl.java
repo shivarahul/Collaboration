@@ -2,80 +2,119 @@ package com.collaboration.DAO;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.collaboration.model.UsersDetails;
 
-import com.collaboration.model.UserDetail;
 
 @Repository("UserDAO")
-public class UserDAOImpl implements UserDAO{
+public class UserDAOImpl implements UserDAO {
 
-	
-	
 	
 	@Autowired
 	SessionFactory sessionFactory;
+	
+	@Autowired
+	UserDAO userDAO;
+	
 	
 	public UserDAOImpl(SessionFactory sessionFactory)
 	{
 		this.sessionFactory=sessionFactory;
 	}
 
-	@Transactional
-	public boolean addUserDetail(UserDetail user) {
-		Session session=sessionFactory.openSession();
-		session.flush();
-		session.close();
-          try	
-		{
-			sessionFactory.getCurrentSession().save(user);
-			return true;
-			}
-			catch(Exception e)
-			{
-			System.out.println("Exception occured:" +e);
-			return false;
-			}	
-		}
-
-	
-
-
-	
-	@Transactional
-	public boolean updateOnlineStatus(String status, UserDetail user) {
-		try
-		{
-			user.setIsOnline(status);
-		sessionFactory.getCurrentSession().save(user);
-		return true;
-		}
-		catch(Exception e)
-		{
-		System.out.println("Exception occured:" +e);
-		return false;
-		}	
-	}
-
-
-	@Transactional
-	public List<UserDetail> getAllUserDetails() {
-		Session session=sessionFactory.openSession();
-		 List<UserDetail> user=(List<UserDetail>)session.createQuery("from UserDetail").list();
-			session.close();
-			return user;
-	}
 
 @Transactional
-	public UserDetail getUserDetails(String username) {
+	public boolean addUserDetail(UsersDetails user) {
+	try
+	{
+		Session session = sessionFactory.getCurrentSession();
+		session.save(user);
+	return true;
+	}
+	catch(Exception e)
+	{
+	System.out.println("Exception occured:" +e);
+	return false;
+	}	
+}
+
+
+
+@Transactional
+	public boolean updateOnlineStatus(String status, UsersDetails user) {
+	try{
+		user.setStatus(status);
+	sessionFactory.getCurrentSession().update(user);
+		return true;
+		
+	}
+	catch(Exception e)
+	{
+	System.out.println("Exception occured:" +e);
+	return false;
+	}	
+}
+@Transactional
+	public UsersDetails getByEmail(String email) {
+	String hql = "from UsersDetails where email='" + email + "'";
+	Query query = sessionFactory.getCurrentSession().createQuery(hql);
+	List<UsersDetails> list = query.list();
+
+	if (list.isEmpty()) {
+		return null;
+	} else {
+		return list.get(0);
+	}
+}
+
+@Transactional
+	public List<UsersDetails> getAllUserDetails() {
 	Session session=sessionFactory.openSession();
-	UserDetail user=(UserDetail)session.get(UserDetail.class,username);
+	List<UsersDetails> user=(List<UsersDetails>)session.createQuery("from UsersDetails").list();
 	session.close();
 	return user;
 }
 
+
+@Transactional
+	public UsersDetails getUserDetails(String username) {
+	String hql = "from UsersDetails where username='" + username + "'";
+	Query query = sessionFactory.getCurrentSession().createQuery(hql);
+	List<UsersDetails> list = query.list();
+
+	if (list.isEmpty()) {
+		return null;
+	} else {
+		return list.get(0);
+	}
 }
+
+
+
+
+@Transactional
+	public boolean checkLogin(String username, String password) {
+		System.out.println("In Check login");
+		Session session = sessionFactory.openSession();
+		boolean userFound = false;
+	
+		String SQL_QUERY =" from UsersDetails as o where o.username=? and o.password=?";
+		Query query = session.createQuery(SQL_QUERY);
+		query.setParameter(0,username);
+		query.setParameter(1,password);
+		List list = query.list();
+
+		if ((list != null) && (list.size() > 0)) {
+			userFound= true;
+		}
+
+		session.close();
+		return userFound;              
+   }
+	}

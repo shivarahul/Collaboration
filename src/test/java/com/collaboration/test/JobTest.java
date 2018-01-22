@@ -16,6 +16,7 @@ import com.collaboration.model.Job;
 
 
 @ComponentScan("com.collaboration")
+@Ignore
 public class JobTest {
 
 	
@@ -34,12 +35,12 @@ static JobDAO jobDAO;
 	}
 	
 	
-//@Ignore
+@Ignore
 	@Test
 	public void addJobTest(){
 		Job job=new Job();
 		job.setJobId(16);
-		job.setJobProfile("ass.man");
+		job.setJobProfile("asst.man");
 		job.setJobDesc("managing");
 		job.setQualification("B.TECH");
 		job.setStatus("Eligible");
@@ -47,8 +48,7 @@ static JobDAO jobDAO;
 		
 		assertTrue("Problems in Inserting Job",jobDAO.addJob(job));
 	}
-	
-@Ignore
+	//@Ignore
 	@Test
 	public void getAllJobTest(){
 		List<Job> jobList=(List<Job>)jobDAO.getAllJobs();

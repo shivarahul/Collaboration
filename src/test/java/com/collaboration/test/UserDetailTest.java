@@ -1,4 +1,4 @@
-package com.collaboration.test;
+/*package com.collaboration.test;
 
 
 import static org.junit.Assert.*;
@@ -13,7 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 import com.collaboration.DAO.UserDAO;
 import com.collaboration.DbConfig.DbConfig;
-import com.collaboration.model.UserDetail;
+import com.collaboration.model.UsersDetails;
+
 
 
 
@@ -36,16 +37,16 @@ static UserDAO  userDAO;
 	@Test
 	public void addUserTest()
 	{
-		UserDetail user=new UserDetail();
-		user.setUserId(15);
-		user.setFirstName("srwaehtuhla");
-		user.setLastName("rest");
-		user.setEmailId("sr@gmail.com");
+		UsersDetails user=new UsersDetails();
+		user.setUsers_Id(15);
+		user.setFirst_Name("srwaehtuhla");
+		user.setLast_Name("rest");
+		user.setEmail_Id("sr@gmail.com");
 		user.setPassword("9195");
 		user.setRole("Admin");
-		user.setStatus("available");
-		user.setIsOnline("Y");
-		assertTrue("Problem in Inserting user", userDAO.addUserDetail(user));
+		
+		
+		assertTrue("Problem in Inserting user", userDAO.saveUser(user));
 
 	}
    @Ignore
@@ -61,4 +62,4 @@ static UserDAO  userDAO;
 
 	}
 	
-}
+}*/

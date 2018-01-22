@@ -15,6 +15,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.collaboration.DAO.BlogDAO;
 import com.collaboration.DAO.BlogDAOImpl;
@@ -22,18 +23,26 @@ import com.collaboration.DAO.ForumDAO;
 import com.collaboration.DAO.ForumDAOImpl;
 import com.collaboration.DAO.JobDAO;
 import com.collaboration.DAO.JobDAOImpl;
+import com.collaboration.DAO.ProfilePictureDAO;
+import com.collaboration.DAO.ProfilePictureDAOImpl;
 import com.collaboration.DAO.UserDAO;
 import com.collaboration.DAO.UserDAOImpl;
 import com.collaboration.model.Blog;
+
 import com.collaboration.model.Forum;
+import com.collaboration.model.Friend;
 import com.collaboration.model.Job;
-import com.collaboration.model.UserDetail;
+import com.collaboration.model.ProfilePicture;
+import com.collaboration.model.UsersDetails;
+
+
 
 
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.collaboration")
 @Component
+@EnableWebMvc
 public class DbConfig 
 {	
 	@Bean(name = "dataSource")
@@ -42,15 +51,16 @@ public class DbConfig
 		DriverManagerDataSource driverManagerDataSource=new DriverManagerDataSource();
 		driverManagerDataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
 		driverManagerDataSource.setUrl("jdbc:oracle:thin:@localhost:1521:XE");
-		driverManagerDataSource.setUsername("MYCOLL");
-		driverManagerDataSource.setPassword("rahul");
+		driverManagerDataSource.setUsername("RAH");
+		driverManagerDataSource.setPassword("rah");
 		return driverManagerDataSource;
 	}
 	public Properties getHibernateProperties()
 	{
 		Properties properties=new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
-		properties.put("hibernate.dialect","org.hibernate.dialect.OracleDialect");
+		properties.setProperty("hibernate.show_sql", "true");
+		properties.put("hibernate.dialect","org.hibernate.dialect.Oracle10gDialect");
 		return properties;
 	}
 	
@@ -62,8 +72,11 @@ public class DbConfig
 		localSessionFactoryBuilder.addProperties(getHibernateProperties());
 		localSessionFactoryBuilder.addAnnotatedClass(Blog.class);
 		localSessionFactoryBuilder.addAnnotatedClass(Forum.class);
-		localSessionFactoryBuilder.addAnnotatedClass(UserDetail.class);
+		localSessionFactoryBuilder.addAnnotatedClass(UsersDetails.class);
 		localSessionFactoryBuilder.addAnnotatedClass(Job.class);
+		localSessionFactoryBuilder.addAnnotatedClass(Friend.class);
+		localSessionFactoryBuilder.addAnnotatedClass(ProfilePicture.class);
+			
 		localSessionFactoryBuilder.scanPackages("com.collaboration");
 		System.out.println("SessionFactory Bean Created");
 		return localSessionFactoryBuilder.buildSessionFactory();
@@ -77,6 +90,17 @@ public class DbConfig
 		System.out.println("Transaction");
 		return transactionManager;
 	}
+	
+
+	@Autowired
+	@Bean(name = "userDAO")
+	public UserDAO getUserDAO(SessionFactory sessionFactory)
+	{
+		System.out.println("User DAO object Created");
+		return new UserDAOImpl(sessionFactory);
+}
+
+	
 	
 	
 	
@@ -98,13 +122,6 @@ public class DbConfig
 	
 	}
 	
-	@Autowired
-	@Bean(name="userDAO")
-	public UserDAO getUserDAO(SessionFactory sessionFactory)
-	{
-		System.out.println("User DAO object Created");
-		return (UserDAO) new UserDAOImpl(sessionFactory);
-	}
 	
 	@Autowired
 	@Bean(name="jobDAO")
@@ -114,4 +131,12 @@ public class DbConfig
 		return (JobDAO) new JobDAOImpl(sessionFactory);
 }
 	
+	@Autowired
+	@Bean(name="profilePictureDAO")
+
+	public ProfilePictureDAO getProfilePictureDAO(SessionFactory sessionFactory) {
+		System.out.println("ProfilePicture DAO object Created");
+		return new ProfilePictureDAOImpl(sessionFactory);
+	
+}
 }

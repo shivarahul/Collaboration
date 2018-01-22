@@ -3,6 +3,7 @@ package com.collaboration.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,7 +12,7 @@ import javax.persistence.Table;
 public class Blog {
 
 	
-	
+	@GeneratedValue
 	@Id
 	int blogId;
 	String blogName;

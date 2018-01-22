@@ -69,6 +69,21 @@ public class JobDAOImpl  implements JobDAO{
 		session.close();
 		return job;
 	}
+
+
+@Transactional
+public boolean deleteJob(Job job) {
+	try
+	{
+	sessionFactory.getCurrentSession().delete(job);
+	return true;
+	}
+	catch(Exception e)
+	{
+	System.out.println("Exception arised:"+e);
+	return false;
+	}
+}
 	
 
 }
